@@ -821,7 +821,11 @@ h2 { font-size: clamp(28px, 4vw, 36px); }
 }
 
 .wa-bubble {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   max-width: 168px;
+  min-height: 28px;
   padding: 7px 10px;
   border-radius: 12px 12px 4px 12px;
   background: #fff;
@@ -830,14 +834,41 @@ h2 { font-size: clamp(28px, 4vw, 36px); }
   font-weight: 700;
   line-height: 1.2;
   box-shadow: 0 8px 18px rgba(0, 0, 0, 0.18);
+  transform-origin: right bottom;
   opacity: 0;
-  transform: translateY(6px);
-  transition: opacity 0.28s ease, transform 0.28s ease;
+  transform: scale(0.62) translateY(8px);
+  transition: opacity 0.38s ease, transform 0.38s ease;
 }
 
 .wa-bubble.is-on {
   opacity: 1;
-  transform: none;
+  transform: scale(1) translateY(0);
+}
+
+.wa-bubble.is-out {
+  opacity: 0;
+  transform: scale(0.55) translateY(10px);
+}
+
+.wa-dots { display: none; gap: 4px; align-items: center; height: 12px; }
+
+.wa-bubble.is-typing .wa-text { display: none; }
+.wa-bubble.is-typing .wa-dots { display: flex; }
+
+.wa-dots i {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #16352d;
+  animation: wa-dot 0.9s ease-in-out infinite;
+}
+
+.wa-dots i:nth-child(2) { animation-delay: 0.15s; }
+.wa-dots i:nth-child(3) { animation-delay: 0.3s; }
+
+@keyframes wa-dot {
+  0%, 80%, 100% { transform: scale(0.6); opacity: 0.4; }
+  40% { transform: scale(1.2); opacity: 1; }
 }
 
 .wa-fab {
@@ -860,7 +891,7 @@ h2 { font-size: clamp(28px, 4vw, 36px); }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .wa-bubble { transition: none; }
+  .wa-dots i { animation: none; opacity: 1; transform: none; }
 }
 
 @keyframes rise {

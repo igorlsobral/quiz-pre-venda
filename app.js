@@ -639,20 +639,42 @@ function setupWhatsapp() {
     link.addEventListener("click", (event) => event.preventDefault());
   }
 
+  const text = bubble.querySelector(".wa-text");
   const messages = ["Tire suas dúvidas", "Entre em contato", "Fale com a gente"];
   let index = 0;
-  const reveal = () => {
-    bubble.textContent = messages[index];
-    bubble.classList.add("is-on");
+  const fade = 380;
+  const hold = 2200;
+  const typing = 1100;
+
+  const showMessage = () => {
+    bubble.classList.remove("is-typing", "is-out");
+    text.textContent = messages[index];
+    requestAnimationFrame(() => bubble.classList.add("is-on"));
   };
-  reveal();
-  setInterval(() => {
-    bubble.classList.remove("is-on");
+
+  const cycle = () => {
     setTimeout(() => {
-      index = (index + 1) % messages.length;
-      reveal();
-    }, 280);
-  }, 2600);
+      bubble.classList.remove("is-on");
+      bubble.classList.add("is-out");
+      setTimeout(() => {
+        bubble.classList.add("is-typing");
+        bubble.classList.remove("is-out");
+        requestAnimationFrame(() => bubble.classList.add("is-on"));
+        setTimeout(() => {
+          bubble.classList.remove("is-on");
+          bubble.classList.add("is-out");
+          setTimeout(() => {
+            index = (index + 1) % messages.length;
+            showMessage();
+            cycle();
+          }, fade);
+        }, typing);
+      }, fade);
+    }, hold);
+  };
+
+  showMessage();
+  cycle();
 }
 
 setupWhatsapp();
