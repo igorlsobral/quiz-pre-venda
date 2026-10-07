@@ -2,8 +2,8 @@
  * Ajuste aqui nome, foto, preços, WhatsApp e links de checkout.
  * productImage: caminho da foto, ex. "produto.png"
  * price: valor à vista. installment: valor de cada parcela no cartão.
- * whatsapp: só números, com DDI. Ex.: "5511999999999"
- * url: link da Hotmart, Kiwify ou página de pagamento daquele plano.
+ * whatsappUrl: link do botão flutuante do WhatsApp.
+ * url: link de cada tratamento.
  * O ID do pixel da Meta fica em index.html, na linha window.META_PIXEL_ID.
  */
 const CONFIG = {
@@ -11,11 +11,11 @@ const CONFIG = {
   productLabel: "Oamericanfit",
   brandName: "American Products",
   productImage: "frasco.png",
-  whatsapp: "",
+  whatsappUrl: "https://gerador-link.devzapp.com.br/s/o95mGh",
   installments: 12,
   plans: {
-    "1": { months: 1, title: "1 mês", price: 197, installment: 20.27, note: "Para começar", url: "" },
-    "2": { months: 2, title: "2 meses", price: 297, installment: 30.56, note: "Ciclo curto", url: "" },
+    "1": { months: 1, title: "1 mês", price: 197, installment: 20.27, note: "Para começar", url: "https://gerador-link.devzapp.com.br/s/Bii9EY" },
+    "2": { months: 2, title: "2 meses", price: 297, installment: 30.56, note: "Ciclo curto", url: "https://gerador-link.devzapp.com.br/s/sDBP6Y" },
     "3": {
       months: 3,
       title: "3 meses",
@@ -23,10 +23,10 @@ const CONFIG = {
       installment: 40.85,
       note: "Tratamento ideal para você",
       promo: "Em promoção",
-      url: "",
+      url: "https://www.contate.me/5541998540243",
     },
-    "5": { months: 5, title: "5 meses", price: 597, installment: 61.43, note: "Período estendido", url: "" },
-    "6": { months: 6, title: "6 meses", price: 697, installment: 71.72, note: "Ciclo mais longo", url: "" },
+    "5": { months: 5, title: "5 meses", price: 597, installment: 61.43, note: "Período estendido", url: "https://gerador-link.devzapp.com.br/s/Pqntu9" },
+    "6": { months: 6, title: "6 meses", price: 697, installment: 71.72, note: "Ciclo mais longo", url: "https://gerador-link.devzapp.com.br/s/0RVpiM" },
   },
 };
 
@@ -601,12 +601,7 @@ function selectPlan(id) {
       currency: "BRL",
     });
   }
-  if (plan.url) {
-    window.open(plan.url, "_blank", "noopener");
-  } else if (CONFIG.whatsapp) {
-    const text = `Olá! Quero o tratamento de ${plan.title} de ${CONFIG.productName}.`;
-    window.open(`https://wa.me/${CONFIG.whatsapp}?text=${encodeURIComponent(text)}`, "_blank", "noopener");
-  }
+  if (plan.url) window.open(plan.url, "_blank", "noopener");
   const top = window.scrollY;
   render();
   window.scrollTo(0, top);
@@ -631,13 +626,7 @@ function setupWhatsapp() {
   const bubble = document.querySelector("#wa-bubble");
   if (!link || !bubble) return;
 
-  const number = String(CONFIG.whatsapp || "").replace(/\D/g, "");
-  if (number) {
-    const text = "Olá! Vim pelo quiz da Oamericanfit e quero tirar uma dúvida.";
-    link.href = `https://wa.me/${number}?text=${encodeURIComponent(text)}`;
-  } else {
-    link.addEventListener("click", (event) => event.preventDefault());
-  }
+  if (CONFIG.whatsappUrl) link.href = CONFIG.whatsappUrl;
 
   const text = bubble.querySelector(".wa-text");
   const messages = ["Tire suas dúvidas", "Entre em contato", "Fale com a gente"];
