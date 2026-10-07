@@ -7,30 +7,30 @@
  * O ID do pixel da Meta fica em index.html, na linha window.META_PIXEL_ID.
  */
 const CONFIG = {
-  productName: "nosso produto",
-  productLabel: "Suplemento alimentar",
-  productImage: "",
+  productName: "Oamericanfit",
+  productLabel: "Oamericanfit",
+  brandName: "American Products",
+  productImage: "frasco.png",
   whatsapp: "",
   installments: 12,
   plans: {
-    "1": { months: 1, title: "1 mês", price: 147, compareAt: 187, installment: 15.12, note: "Para começar", url: "" },
-    "2": { months: 2, title: "2 meses", price: 167, compareAt: 294, installment: 17.18, note: "Ciclo curto", url: "" },
+    "1": { months: 1, title: "1 mês", price: 197, installment: 20.27, note: "Para começar", url: "" },
+    "2": { months: 2, title: "2 meses", price: 297, installment: 30.56, note: "Ciclo curto", url: "" },
     "3": {
       months: 3,
       title: "3 meses",
-      price: 197,
-      compareAt: 392,
-      installment: 20.27,
+      price: 397,
+      installment: 40.85,
       note: "Tratamento ideal para você",
       promo: "Em promoção",
       url: "",
     },
-    "4": { months: 4, title: "4 meses", price: 247, compareAt: 467, installment: 25.41, note: "Período estendido", url: "" },
-    "6": { months: 6, title: "6 meses", price: 377, compareAt: 597, installment: 38.78, note: "Ciclo mais longo", url: "" },
+    "5": { months: 5, title: "5 meses", price: 597, installment: 61.43, note: "Período estendido", url: "" },
+    "6": { months: 6, title: "6 meses", price: 697, installment: 71.72, note: "Ciclo mais longo", url: "" },
   },
 };
 
-const OTHER_ORDER = ["1", "2", "6", "4"];
+const OTHER_ORDER = ["1", "2", "5", "6"];
 
 const QUESTIONS = [
   {
@@ -126,25 +126,9 @@ function money(value, cents = value % 1 !== 0) {
   });
 }
 
-function bottleMarkup() {
-  return `
-    <svg class="bottle" viewBox="0 0 70 148" aria-hidden="true">
-      <rect x="28" y="2" width="14" height="14" rx="3" fill="#e7ebef"/>
-      <rect x="31" y="14" width="8" height="12" fill="#c5ccd3"/>
-      <path d="M16 38c0-8 8-14 19-14s19 6 19 14v80c0 12-8 20-19 20s-19-8-19-20V38z" fill="#6a4032"/>
-      <path d="M20 46c1 22 1 50 0 72 8 6 22 6 30 0-1-22-1-50 0-72-8-5-22-5-30 0z" fill="#fff" opacity=".16"/>
-      <rect x="21" y="66" width="28" height="36" rx="3" fill="#f6f1e7"/>
-      <rect x="26" y="76" width="18" height="2.5" rx="1" fill="#c44732"/>
-      <rect x="26" y="82" width="12" height="2" rx="1" fill="#1b3a32" opacity=".35"/>
-    </svg>
-  `;
-}
-
 function productVisual() {
-  if (CONFIG.productImage) {
-    return `<img class="product-photo" src="${CONFIG.productImage}" alt="${CONFIG.productLabel}">`;
-  }
-  return `<div class="bottle-row" aria-hidden="true">${bottleMarkup()}${bottleMarkup()}${bottleMarkup()}</div>`;
+  const photo = `<img class="bottle-photo" src="${CONFIG.productImage}" alt="Frasco ${CONFIG.productLabel}">`;
+  return `<div class="bottle-row">${photo}${photo}${photo}</div>`;
 }
 
 function visibleQuestions() {
@@ -212,9 +196,9 @@ function render() {
 function renderIntro() {
   app.innerHTML = `
     <div class="${shellClass()}">
-      <div class="topbar"><span>Avaliação de perfil</span><span>2 min</span></div>
+      <div class="topbar"><span>${CONFIG.productLabel}</span><span>2 min</span></div>
       <section class="card">
-        <p class="eyebrow">Pré-venda</p>
+        <p class="eyebrow">${CONFIG.brandName}</p>
         <h1>Vamos indicar o tratamento certo para o seu momento.</h1>
         <p class="lede">Algumas perguntas sobre o que você sente hoje. A forma como apresentamos o suplemento muda conforme as suas respostas.</p>
         <button class="btn primary full" id="start" type="button">Começar</button>
@@ -251,7 +235,7 @@ function renderQuestion() {
 
   app.innerHTML = `
     <div class="${shellClass()}">
-      <div class="topbar"><span>Avaliação de perfil</span><span>${state.index + 1} de ${questions.length}</span></div>
+      <div class="topbar"><span>${CONFIG.productLabel}</span><span>${state.index + 1} de ${questions.length}</span></div>
       <section class="card">
         <div class="progress" aria-hidden="true"><span style="width:${progress}%"></span></div>
         <p class="step-label">Pergunta ${state.index + 1}</p>
@@ -351,7 +335,8 @@ function renderAnalysis() {
     </div>
   `;
 
-  const step = reducedMotion() ? 80 : 950;
+  const step = 650;
+  const wait = Math.max(2000, step * phrases.length + 200);
   phrases.forEach((text, index) => {
     if (index === 0) return;
     later(() => {
@@ -370,7 +355,7 @@ function renderAnalysis() {
     state.selectedPlan = null;
     state.direction = "forward";
     render();
-  }, reducedMotion() ? 280 : step * phrases.length + 280);
+  }, wait);
 }
 
 function profileCopy(answers) {
@@ -518,7 +503,7 @@ function renderResult() {
     <div class="buybar">
       <div>
         <strong>Tratamento de 3 meses</strong>
-        <span>O mais indicado para você</span>
+        <span>${CONFIG.productLabel}</span>
       </div>
       <button class="buybar-btn" id="buy-now" type="button">Comprar agora</button>
     </div>
@@ -540,13 +525,13 @@ function renderResult() {
           <div class="offer-stage">${productVisual()}</div>
           <p class="offer-banner">Tratamento de 3 meses</p>
           <div class="offer-body">
-            <p class="offer-kicker">${featured.note}</p>
+            <p class="offer-kicker">${CONFIG.brandName}</p>
             <h3>${CONFIG.productLabel}</h3>
+            <p class="offer-line">${featured.note} · Detox Week</p>
             <ul class="offer-points">
               ${copy.effects.map((effect) => `<li>${effect.short}</li>`).join("")}
             </ul>
             <div class="price-box">
-              <p class="from">De <s>${money(featured.compareAt)}</s></p>
               <p class="of">por apenas ${CONFIG.installments}x de</p>
               <p class="big">${money(featured.installment, true)}</p>
               <p class="avista">ou ${money(featured.price)} à vista</p>
