@@ -626,4 +626,34 @@ function restart() {
   render();
 }
 
+function setupWhatsapp() {
+  const link = document.querySelector("#wa-widget");
+  const bubble = document.querySelector("#wa-bubble");
+  if (!link || !bubble) return;
+
+  const number = String(CONFIG.whatsapp || "").replace(/\D/g, "");
+  if (number) {
+    const text = "Olá! Vim pelo quiz da Oamericanfit e quero tirar uma dúvida.";
+    link.href = `https://wa.me/${number}?text=${encodeURIComponent(text)}`;
+  } else {
+    link.addEventListener("click", (event) => event.preventDefault());
+  }
+
+  const messages = ["Tire suas dúvidas", "Entre em contato", "Fale com a gente"];
+  let index = 0;
+  const reveal = () => {
+    bubble.textContent = messages[index];
+    bubble.classList.add("is-on");
+  };
+  reveal();
+  setInterval(() => {
+    bubble.classList.remove("is-on");
+    setTimeout(() => {
+      index = (index + 1) % messages.length;
+      reveal();
+    }, 280);
+  }, 2600);
+}
+
+setupWhatsapp();
 render();

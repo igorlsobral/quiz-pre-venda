@@ -808,6 +808,61 @@ h2 { font-size: clamp(28px, 4vw, 36px); }
 
 .offer { scroll-margin-top: 78px; }
 
+.wa-widget {
+  position: fixed;
+  right: max(16px, env(safe-area-inset-right));
+  bottom: max(16px, env(safe-area-inset-bottom));
+  z-index: 40;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 8px;
+  text-decoration: none;
+}
+
+.wa-bubble {
+  max-width: 168px;
+  padding: 7px 10px;
+  border-radius: 12px 12px 4px 12px;
+  background: #fff;
+  color: #16352d;
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 1.2;
+  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.18);
+  opacity: 0;
+  transform: translateY(6px);
+  transition: opacity 0.28s ease, transform 0.28s ease;
+}
+
+.wa-bubble.is-on {
+  opacity: 1;
+  transform: none;
+}
+
+.wa-fab {
+  width: 54px;
+  height: 54px;
+  border-radius: 50%;
+  background: #25d366;
+  display: grid;
+  place-items: center;
+  box-shadow: 0 10px 22px rgba(20, 90, 40, 0.35);
+}
+
+.wa-widget:hover .wa-fab { background: #1ebe5d; }
+
+@media (max-width: 520px) {
+  .float-hint {
+    left: 16px;
+    transform: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .wa-bubble { transition: none; }
+}
+
 @keyframes rise {
   to { opacity: 1; transform: none; }
 }
